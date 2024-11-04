@@ -1,0 +1,100 @@
+{
+    "geode": "3.9.0",
+    "gd": {
+        "win": "2.206",
+        "android": "2.206",
+        "mac": "2.206",
+        "ios": "2.206"
+    },
+    "id": "ninkaz.night-mode",
+    "name": "Night Mode",
+    "version": "v1.0.0",
+    "developer": "NinKaz",
+    "description": "Beautiful, vanilla night mode",
+    "tags": ["customization", "interface", "offline"],
+    "early-load": true,
+    "dependencies": [
+        {
+            "id": "geode.node-ids",
+            "version": ">=v1.15.0",
+            "importance": "required"
+        }
+    ],
+    "resources": {
+        "spritesheets": {
+            "icons": ["resources/*.png"]
+        },
+        "files": ["resources/night-menuLoop.mp3"]
+    },
+    "settings": {
+        "night-mode": {
+            "type": "bool",
+            "name": "Night Mode",
+            "default": true
+        },
+        "quick-toggle": {
+            "type": "bool",
+            "name": "Show Quick Toggle",
+            "description": "Add a toggle switch to the main menu to quickly enable/disable night mode.",
+            "default": true
+        },
+        "visuals-title": {
+            "type": "title",
+            "name": "Customize Visuals"
+        },
+        "adjust-brightness": {
+            "type": "custom:adjust-brightness",
+            "name": "Adjust Brightness",
+            "description": "Multiply the brightness of the background. 0.50x is half as bright and 2.00x is twice as bright.",
+            "default": 1,
+            "min": 0.25,
+            "max": 2.5,
+            "slider-step": 0.05
+        },
+        "background-stars": {
+            "type": "string",
+            "name": "Background Stars",
+            "description": "Toggle the visibility of background particles.",
+            "one-of": ["Show All", "Main Menu Only", "Show None"],
+            "default": "Show All"
+        },
+        "music-title": {
+            "type": "title",
+            "name": "Customize Music"
+        },
+        "change-music": {
+            "type": "bool",
+            "name": "Night Mode Music",
+            "description": "Change the music when night mode is enabled.",
+            "default": true
+        },
+        "custom-song-id": {
+            "type": "custom:song-id",
+            "name": "Custom Song ID",
+            "description": "Custom song ID to play when night mode is enabled.",
+            "default": {
+                "enabled": false,
+                "id": 0
+            },
+            "placeholder": "Song ID",
+            "enable-if": "change-music"
+        },
+        "tp-title": {
+            "type": "title",
+            "name": "Compatibility",
+            "description": "These settings are for compatibility with other mods and texture packs. Only disable these if it causes issues."
+        },
+        "change-other-mods": {
+            "type": "bool",
+            "name": "Change Other Mods",
+            "description": "Apply night mode to pages created by other mods, including the Geode UI.",
+            "default": true
+        },
+        "recolor-scale9sprite": {
+            "type": "bool",
+            "name": "Recolor background sprites",
+            "description": "Change the colors of Scale9Sprite elements on the search and saved level pages to match the theme.",
+            "default": true
+        }
+    }
+}
