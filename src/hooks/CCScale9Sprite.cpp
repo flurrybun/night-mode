@@ -71,9 +71,13 @@ class $modify(LevelSearchLayer) {
 
         for (auto child : CCArrayExt<CCNode*>(getChildren())) {
             if (auto sprite = typeinfo_cast<CCScale9Sprite*>(child)) {
-                // sprite->setColor(night::adjustBrightness(ccc3(2, 4, 11)));
-                sprite->setColor(night::adjustBrightness(ccc3(30, 56, 95)));
-                sprite->setOpacity(80);
+                if (sprite->getID() != "level-search-bar-bg") {
+                    sprite->setColor(night::adjustBrightness(ccc3(10, 28, 55)));
+                    sprite->setOpacity(80);
+                } else {
+                    sprite->setColor(ccc3(0, 0, 0));
+                    sprite->setOpacity(60);
+                }
 
                 static_cast<FixedCCScale9Sprite*>(sprite)->fixSprite();
             }
@@ -91,7 +95,7 @@ class $modify(GJGarageLayer) {
         if (!Mod::get()->getSettingValue<bool>("recolor-scale9sprite")) return true;
 
         if (auto sprite = typeinfo_cast<CCScale9Sprite*>(getChildByID("select-background"))) {
-            sprite->setColor(night::adjustBrightness(ccc3(78, 78, 78)));
+            sprite->setColor(night::adjustBrightness(ccc3(35, 35, 35)));
             sprite->setOpacity(80);
 
             static_cast<FixedCCScale9Sprite*>(sprite)->toColoredSprite();
