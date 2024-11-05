@@ -36,9 +36,12 @@ class $modify(FixedCCScale9Sprite, CCScale9Sprite) {
     }
 
     void toColoredSprite() {
-        // auto texture = CCTextureCache::get()->textureForKey("square02b_001.png
         auto texture = CCSprite::create("square02b_001.png")->getTexture();
         _scale9Image->setTexture(texture);
+    }
+
+    void additiveBlending() {
+        _scale9Image->setBlendFunc({GL_ONE, GL_ONE_MINUS_CONSTANT_ALPHA});
     }
 };
 
@@ -52,9 +55,10 @@ class $modify(EditLevelLayer) {
         for (auto child : CCArrayExt<CCNode*>(getChildren())) {
             if (auto sprite = typeinfo_cast<CCScale9Sprite*>(child)) {
                 sprite->setColor(night::adjustBrightness(ccc3(30, 56, 95)));
-                sprite->setOpacity(110);
+                sprite->setOpacity(60);
 
                 static_cast<FixedCCScale9Sprite*>(sprite)->fixSprite();
+                static_cast<FixedCCScale9Sprite*>(sprite)->additiveBlending();
             }
         }
 
@@ -73,7 +77,9 @@ class $modify(LevelSearchLayer) {
             if (auto sprite = typeinfo_cast<CCScale9Sprite*>(child)) {
                 if (sprite->getID() != "level-search-bar-bg") {
                     sprite->setColor(night::adjustBrightness(ccc3(10, 28, 55)));
-                    sprite->setOpacity(80);
+                    sprite->setOpacity(60);
+
+                    static_cast<FixedCCScale9Sprite*>(sprite)->additiveBlending();
                 } else {
                     sprite->setColor(ccc3(0, 0, 0));
                     sprite->setOpacity(60);
@@ -96,9 +102,10 @@ class $modify(GJGarageLayer) {
 
         if (auto sprite = typeinfo_cast<CCScale9Sprite*>(getChildByID("select-background"))) {
             sprite->setColor(night::adjustBrightness(ccc3(35, 35, 35)));
-            sprite->setOpacity(80);
+            sprite->setOpacity(60);
 
             static_cast<FixedCCScale9Sprite*>(sprite)->toColoredSprite();
+            static_cast<FixedCCScale9Sprite*>(sprite)->additiveBlending();
         }
 
         return true;
