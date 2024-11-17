@@ -1,7 +1,7 @@
 #include "SongIDSetting.hpp"
 #include <Geode/loader/SettingV3.hpp>
 
-Result<std::shared_ptr<SongIDSettingV3>> SongIDSettingV3::parse(std::string const& key, std::string const& modID, matjson::Value const& json) {
+Result<std::shared_ptr<SettingV3>> SongIDSettingV3::parse(std::string const& key, std::string const& modID, matjson::Value const& json) {
     auto res = std::make_shared<SongIDSettingV3>();
     auto root = checkJson(json, "SongIDSettingV3");
 
@@ -10,7 +10,7 @@ Result<std::shared_ptr<SongIDSettingV3>> SongIDSettingV3::parse(std::string cons
 
     root.checkUnknownKeys();
 
-    return root.ok(res);
+    return root.ok(std::static_pointer_cast<SettingV3>(res));
 }
 
 SettingNodeV3* SongIDSettingV3::createNode(float width) {
@@ -40,7 +40,7 @@ bool SongIDNodeV3::init(std::shared_ptr<SongIDSettingV3> setting, float width) {
     });
     m_input->setFilter("0123456789");
     m_input->setMaxCharCount(9);
-    m_input->getInputNode()->m_numberInput;
+    m_input->getInputNode()->m_numberInput = true;
     m_input->setPlaceholder(setting->m_placeholder);
     m_input->setString(getValue().second != 0 ? std::to_string(getValue().second) : "");
     m_input->setLayoutOptions(

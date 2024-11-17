@@ -3,6 +3,7 @@
 #include <Geode/loader/SettingV3.hpp>
 #include <Geode/loader/Mod.hpp>
 #include <Geode/binding/Slider.hpp>
+#include <Geode/Geode.hpp>
 using namespace geode::prelude;
 
 // a lot of this code is copied from geode's implementation of FloatSettingV3
@@ -14,7 +15,7 @@ public:
     float m_maxValue;
     float m_sliderSnap;
 
-    static Result<std::shared_ptr<AdjustBrightnessSettingV3>> parse(
+    static Result<std::shared_ptr<SettingV3>> parse(
         std::string const& key, std::string const& modID, matjson::Value const& json);
 
     SettingNodeV3* createNode(float width) override;
@@ -27,7 +28,7 @@ protected:
     CCSprite* m_colorSprite;
 
     bool init(std::shared_ptr<AdjustBrightnessSettingV3> setting, float width);
-    
+
     void updateState(CCNode* invoker) override;
     float valueFromSlider(float num);
     void onSlider(CCObject*);

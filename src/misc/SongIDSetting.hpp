@@ -3,6 +3,7 @@
 #include <Geode/loader/SettingV3.hpp>
 #include <Geode/loader/Mod.hpp>
 #include <Geode/ui/TextInput.hpp>
+#include <Geode/Geode.hpp>
 using namespace geode::prelude;
 
 // a lot of this code is copied from geode's implementation of StringSettingV3
@@ -11,22 +12,22 @@ using SongID = std::pair<bool, int>;
 
 template <>
 struct matjson::Serialize<SongID> {
-    static matjson::Value to_json(SongID const& value) {
-        return matjson::Object({
+    static matjson::Value toJson(SongID const& value) {
+        return matjson::makeObject({
             {"enabled", value.first},
             {"id", value.second}
         });
     }
-    static SongID from_json(matjson::Value const& value) {
-        return {
-            value["enabled"].as_bool(),
-            value["id"].as_int()
-        };
+    static Result<SongID> fromJson(matjson::Value const& value) {
+        GEODE_UNWRAP_INTO(bool enabled, value["enabled"].asBool());
+        GEODE_UNWRAP_INTO(int id, value["id"].asInt());
+
+        return Ok(SongID(enabled, id));
     }
-    static bool is_json(matjson::Value const& json) {
-        if (!json.is_object()) return false;
+    static bool isJson(matjson::Value const& json) {
+        if (!json.isObject()) return false;
         if (!json.contains("enabled") || !json.contains("id")) return false;
-        return json["enabled"].is_bool() && json["id"].is_number();
+        return json["enabled"].isBool() && json["id"].isNumber();
     }
 };
 
@@ -34,7 +35,7 @@ class SongIDSettingV3 : public SettingBaseValueV3<SongID> {
 public:
     std::string m_placeholder;
 
-    static Result<std::shared_ptr<SongIDSettingV3>> parse(
+    static Result<std::shared_ptr<SettingV3>> parse(
         std::string const& key, std::string const& modID, matjson::Value const& json);
 
     SettingNodeV3* createNode(float width) override;

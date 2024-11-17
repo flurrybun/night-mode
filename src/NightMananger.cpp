@@ -8,10 +8,8 @@ bool night::isNightMode() {
 
 void night::updateDefaultBackground(CCLayer* self, BGColor bgColor) {
     if (!isNightMode()) return;
-    
+
     CCSprite* background = typeinfo_cast<CCSprite*>(self->getChildByID("background"));
-    //TEMP FIX UNTIL NODE IDS ARE ADDED PLEASE REMEMBER TO DELETE THIS LINE OMG
-    if (!background) background = self->getChildByType<CCSprite>(0);
     if (!background) return;
 
     background->setZOrder(-10);

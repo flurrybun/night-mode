@@ -2,7 +2,7 @@
 #include "../NightManager.hpp"
 #include <Geode/loader/SettingV3.hpp>
 
-Result<std::shared_ptr<AdjustBrightnessSettingV3>> AdjustBrightnessSettingV3::parse(
+Result<std::shared_ptr<SettingV3>> AdjustBrightnessSettingV3::parse(
     std::string const& key,
     std::string const& modID,
     matjson::Value const& json
@@ -17,7 +17,7 @@ Result<std::shared_ptr<AdjustBrightnessSettingV3>> AdjustBrightnessSettingV3::pa
 
     root.checkUnknownKeys();
 
-    return root.ok(res);
+    return root.ok(std::static_pointer_cast<SettingV3>(res));
 }
 
 SettingNodeV3* AdjustBrightnessSettingV3::createNode(float width) {
@@ -25,6 +25,7 @@ SettingNodeV3* AdjustBrightnessSettingV3::createNode(float width) {
         std::static_pointer_cast<AdjustBrightnessSettingV3>(shared_from_this()),
         width
     );
+    return nullptr;
 }
 
 bool AdjustBrightnessNodeV3::init(std::shared_ptr<AdjustBrightnessSettingV3> setting, float width) {
