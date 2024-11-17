@@ -1,5 +1,6 @@
 #include "NightManager.hpp"
 #include "misc/BrightnessSetting.hpp"
+#include "misc/Color.hpp"
 #include <Geode/binding/GameToolbox.hpp>
 
 bool night::isNightMode() {
@@ -159,14 +160,12 @@ void night::addGeodeParticles(CCNode* parent) {
 
 ccColor3B night::adjustBrightness(const ccColor3B& color, float scalar) {
     auto baseFactor = Mod::get()->getSettingValue<float>("adjust-brightness");
-    if (baseFactor < 0 || baseFactor > 2) return color;
+    if (baseFactor < 0) return color;
 
     auto factor = baseFactor + (baseFactor - 1) * (scalar - 1);
     if (factor == 1.0) return color;
 
-    auto r = std::clamp(color.r * factor, 0.f, 255.f);
-    auto g = std::clamp(color.g * factor, 0.f, 255.f);
-    auto b = std::clamp(color.b * factor, 0.f, 255.f);
-
-    return ccc3(r, g, b);
+    auto hsv = color::rgb2hsv(color);
+    hsv.v *= factor;
+    return color::hsv2rgb(hsv);
 }

@@ -1,105 +1,62 @@
 #include "Color.hpp"
 
-// stolen from stack overflow
+ccHSVValue color::rgb2hsv(const ccColor3B& rgb) {
+    float r = std::clamp(static_cast<int>(rgb.r), 0, 255) / 255.0f;
+    float g = std::clamp(static_cast<int>(rgb.g), 0, 255) / 255.0f;
+    float b = std::clamp(static_cast<int>(rgb.b), 0, 255) / 255.0f;
 
-ccHSVValue color::rgb2hsv(ccColor3B in)
-{
-    ccHSVValue  out;
-    double      min, max, delta;
+    float max = std::max({r, g, b});
+    float min = std::min({r, g, b});
+    float delta = max - min;
 
-    min = in.r < in.g ? in.r : in.g;
-    min = min  < in.b ? min  : in.b;
+    ccHSVValue hsv;
+    hsv.v = max;
 
-    max = in.r > in.g ? in.r : in.g;
-    max = max  > in.b ? max  : in.b;
-
-    out.v = max;                                // v
-    delta = max - min;
-    if (delta < 0.00001)
-    {
-        out.s = 0;
-        out.h = 0; // undefined, maybe nan?
-        return out;
+    if (delta < 0.00001f) {
+        hsv.h = 0;
+        hsv.s = 0;
+        return hsv;
     }
-    if( max > 0.0 ) { // NOTE: if Max is == 0, this divide would cause a crash
-        out.s = (delta / max);                  // s
+
+    hsv.s = (max > 0.0f) ? (delta / max) : 0.0f;
+
+    if (r >= max) {
+        hsv.h = (g - b) / delta;
+    } else if (g >= max) {
+        hsv.h = 2.0f + (b - r) / delta;
     } else {
-        // if max is 0, then r = g = b = 0              
-        // s = 0, h is undefined
-        out.s = 0.0;
-        out.h = NAN;                            // its now undefined
-        return out;
+        hsv.h = 4.0f + (r - g) / delta;
     }
-    if( in.r >= max )                           // > is bogus, just keeps compilor happy
-        out.h = ( in.g - in.b ) / delta;        // between yellow & magenta
-    else
-    if( in.g >= max )
-        out.h = 2.0 + ( in.b - in.r ) / delta;  // between cyan & yellow
-    else
-        out.h = 4.0 + ( in.r - in.g ) / delta;  // between magenta & cyan
 
-    out.h *= 60.0;                              // degrees
+    hsv.h *= 60.0f;
+    if (hsv.h < 0.0f) {
+        hsv.h += 360.0f;
+    }
 
-    if( out.h < 0.0 )
-        out.h += 360.0;
-
-    return out;
+    return hsv;
 }
 
-ccColor3B color::hsv2rgb(ccHSVValue in)
-{
-    double      hh, p, q, t, ff;
-    long        i;
-    ccColor3B   out;
+ccColor3B color::hsv2rgb(const ccHSVValue& hsv) {
+    float h = fmod(hsv.h, 360.0f);
+    if (h < 0.0f) h += 360.0f;
+    float s = std::clamp(hsv.s, 0.0f, 1.0f);
+    float v = std::clamp(hsv.v, 0.0f, 1.0f);
 
-    if(in.s <= 0.0) {       // < is bogus, just shuts up warnings
-        out.r = in.v;
-        out.g = in.v;
-        out.b = in.v;
-        return out;
+    int i = static_cast<int>(h / 60.0f) % 6;
+    float f = (h / 60.0f) - i;
+    float p = v * (1.0f - s);
+    float q = v * (1.0f - f * s);
+    float t = v * (1.0f - (1.0f - f) * s);
+
+    float r, g, b;
+    switch (i) {
+        case 0: r = v; g = t; b = p; break;
+        case 1: r = q; g = v; b = p; break;
+        case 2: r = p; g = v; b = t; break;
+        case 3: r = p; g = q; b = v; break;
+        case 4: r = t; g = p; b = v; break;
+        default: r = v; g = p; b = q; break;
     }
-    hh = in.h;
-    if(hh >= 360.0) hh = 0.0;
-    hh /= 60.0;
-    i = (long)hh;
-    ff = hh - i;
-    p = in.v * (1.0 - in.s);
-    q = in.v * (1.0 - (in.s * ff));
-    t = in.v * (1.0 - (in.s * (1.0 - ff)));
 
-    switch(i) {
-    case 0:
-        out.r = in.v;
-        out.g = t;
-        out.b = p;
-        break;
-    case 1:
-        out.r = q;
-        out.g = in.v;
-        out.b = p;
-        break;
-    case 2:
-        out.r = p;
-        out.g = in.v;
-        out.b = t;
-        break;
-
-    case 3:
-        out.r = p;
-        out.g = q;
-        out.b = in.v;
-        break;
-    case 4:
-        out.r = t;
-        out.g = p;
-        out.b = in.v;
-        break;
-    case 5:
-    default:
-        out.r = in.v;
-        out.g = p;
-        out.b = q;
-        break;
-    }
-    return out;     
+    return ccc3(r * 255, g * 255, b * 255);
 }
