@@ -69,14 +69,13 @@ MAKE_NIGHT_0(SecretLayer, night::BGColor::Cyan)
 #include <Geode/modify/SecretLayer4.hpp>
 MAKE_NIGHT_0(SecretLayer4, night::BGColor::Red)
 
-// weekly and gauntlet levels have gray backgrounds instead of the normal blue
-
 #include <Geode/binding/GJGameLevel.hpp>
 #include <Geode/modify/LevelInfoLayer.hpp>
-
 auto getLILColor = [](GJGameLevel* level) {
-    bool isGray = level->m_gauntletLevel || level->m_dailyID.value() > 100000;
-    return isGray ? night::BGColor::Gray : night::BGColor::Blue;
+    if (level->m_gauntletLevel) return night::BGColor::Gray; // gauntlet level
+    if (level->m_dailyID.value() < 100000) return night::BGColor::Blue; // normal level
+    if (level->m_dailyID.value() < 200000) return night::BGColor::Gray; // weekly demon
+    return night::BGColor::Purple; // event level
 };
 
 MAKE_NIGHT_2(LevelInfoLayer, GJGameLevel*, bool, getLILColor(p0))

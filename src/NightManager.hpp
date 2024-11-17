@@ -11,8 +11,8 @@ namespace night {
     static const ccColor3B GRAY_BG_COLOR = ccc3(16, 16, 16);
     static const std::array<ccColor3B, 3> GRAY_PARTICLE_COLORS = {ccc3(140, 140, 140), ccc3(117, 117, 117), ccc3(4, 4, 4)};
 
-    static const ccColor3B PURPLE_BG_COLOR = ccc3(14, 5, 35);
-    static const std::array<ccColor3B, 3> PURPLE_PARTICLE_COLORS = {ccc3(163, 96, 168), ccc3(110, 49, 147), ccc3(8, 1, 17)};
+    static const ccColor3B PURPLE_BG_COLOR = ccc3(19, 5, 35);
+    static const std::array<ccColor3B, 3> PURPLE_PARTICLE_COLORS = {ccc3(163, 96, 168), ccc3(114, 49, 147), ccc3(10, 1, 17)};
 
     static const ccColor3B CYAN_BG_COLOR = ccc3(4, 19, 28);
     static const std::array<ccColor3B, 3> CYAN_PARTICLE_COLORS = {ccc3(96, 148, 168), ccc3(49, 106, 147), ccc3(1, 11, 20)};
