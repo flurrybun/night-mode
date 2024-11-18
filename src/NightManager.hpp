@@ -49,9 +49,9 @@ namespace night {
     void setBGColor(CCSprite*, BGColor);
     CCSprite* createBackgroundSprite();
 
-    CCParticleSystemQuad* addParticle(CCNode*, const std::string&, const std::string&, const std::optional<ParticleCallback>& = std::nullopt);
-    std::array<CCParticleSystemQuad*, 6> addParticlesWithColor(CCNode*, const std::array<ccColor3B, 3>&, const std::optional<ParticleCallback>& = std::nullopt);
-    std::array<CCParticleSystemQuad*, 6> addParticlesWithColor(CCNode*, BGColor, const std::optional<ParticleCallback>& = std::nullopt);
+    void addParticle(CCNode*, const std::string&, const std::string&, const std::optional<ParticleCallback>& = std::nullopt);
+    void addParticlesWithColor(CCNode*, const std::array<ccColor3B, 3>&, const std::optional<ParticleCallback>& = std::nullopt);
+    void addParticlesWithColor(CCNode*, BGColor, const std::optional<ParticleCallback>& = std::nullopt);
     void addGeodeParticles(CCNode*);
 
     ccColor3B adjustBrightness(const ccColor3B&, float = 1);

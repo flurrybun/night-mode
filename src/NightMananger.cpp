@@ -74,9 +74,9 @@ CCSprite* night::createBackgroundSprite() {
     return sprite;
 }
 
-CCParticleSystemQuad* night::addParticle(CCNode* parent, const std::string& id, const std::string& particleString, const std::optional<ParticleCallback>& callback) {
+void night::addParticle(CCNode* parent, const std::string& id, const std::string& particleString, const std::optional<ParticleCallback>& callback) {
     auto particle = GameToolbox::particleFromString(particleString, nullptr, false);
-    if (!particle) return nullptr;
+    if (!particle) return;
 
     if (callback) callback.value()(particle);
 
@@ -86,11 +86,9 @@ CCParticleSystemQuad* night::addParticle(CCNode* parent, const std::string& id, 
     parent->addChild(particle);
 
     if (particle->getEmissionRate() == -1) particle->setAutoRemoveOnFinish(true);
-
-    return particle;
 }
 
-std::array<CCParticleSystemQuad*, 6> night::addParticlesWithColor(CCNode* parent, const std::array<ccColor3B, 3>& colors, const std::optional<ParticleCallback>& callback) {
+void night::addParticlesWithColor(CCNode* parent, const std::array<ccColor3B, 3>& colors, const std::optional<ParticleCallback>& callback) {
     auto toStr = [](ccColor3B color) {
         color = adjustBrightness(color, 0.5);
 
@@ -103,33 +101,33 @@ std::array<CCParticleSystemQuad*, 6> night::addParticlesWithColor(CCNode* parent
     };
 
     std::array<std::string, 3> strColors = { toStr(colors[0]), toStr(colors[1]), toStr(colors[2]) };
-    std::array<CCParticleSystemQuad*, 6> particles;
 
-    particles[0] = addParticle(parent, "init-big-stars"_spr, "10a0.1a4a2a-1a0a180a0a2a400a200a0a0a0a0a0a0a8a2a45a0a" + strColors[0] + "a0.8a0.3a0a0a0a0a" + strColors[0] + "a0.8a0.3a0a0a2a0a0a0a0a0a0a0a0a2a1a1a0a0a169a0a0a0a0a0a0a1a0a0a0a0a0a0a0", callback);
-    particles[1] = addParticle(parent, "big-stars"_spr, "15a-1a5a2a2a0a180a0a2a400a200a0a0a0a0a0a0a8a2a45a0a" + strColors[0] + "a0.8a0.3a0a0a0a0a" + strColors[0] + "a0.8a0.3a1a0a2a0a0a0a0a0a0a0a0a2a1a1a0a0a169a0a0a0a0a0a0a1a0a0a0a0a0a0a0", callback);
-    particles[2] = addParticle(parent, "init-small-stars"_spr, "70a0.1a4a2a-1a0a180a0a2a400a200a0a0a0a0a0a0a2a1a0a0a" + strColors[1] + "a0.6a0.4a0a0a0a0a" + strColors[1] + "a0.6a0.4a0a0a2a0a0a0a0a0a0a0a0a2a1a0a0a0a28a0a0a0a0a0a0a1a0a0a0a0a0a0a0", callback);
-    particles[3] = addParticle(parent, "small-stars"_spr, "105a-1a5a2a15a0a180a0a2a300a200a0a0a0a0a0a0a2a1a0a0a" + strColors[1] + "a0.6a0.4a0a0a0a0a" + strColors[1] + "a0.6a0.4a1a0a2a0a0a0a0a0a0a0a0a2a1a0a0a0a28a0a0a0a0a0a0a1a0a0a0a0a0a0a0", callback);
-    particles[4] = addParticle(parent, "init-space-dust"_spr, "30a0.1a4a2a-1a0a180a0a2a400a200a0a0a0a0a0a0a200a120a0a360a" + strColors[2] + "a0.19a0.1a0a0a0a0a" + strColors[2] + "a0.19a0.1a0a0a2a0a0a0a0a0a0a0a0a2a1a1a0a0a46a0a0a0a0a0a0a1a0a0a0a0a0a0a0", callback);
-    particles[5] = addParticle(parent, "space-dust"_spr, "55a-1a8a2a5a0a180a0a2a400a200a0a0a0a0a0a0a200a120a0a360a" + strColors[2] + "a0.19a0.1a0a0a0a0a" + strColors[2] + "a0.19a0.1a1a0a2a0a0a0a0a0a0a0a0a2a1a1a0a0a46a0a0a0a0a0a0a1a0a0a0a0a0a0a0", callback);
-
-    return particles;
+    addParticle(parent, "init-big-stars"_spr, "10a0.1a4a2a-1a0a180a0a2a400a200a0a0a0a0a0a0a8a2a45a0a" + strColors[0] + "a0.8a0.3a0a0a0a0a" + strColors[0] + "a0.8a0.3a0a0a2a0a0a0a0a0a0a0a0a2a1a1a0a0a169a0a0a0a0a0a0a1a0a0a0a0a0a0a0", callback);
+    addParticle(parent, "big-stars"_spr, "15a-1a5a2a2a0a180a0a2a400a200a0a0a0a0a0a0a8a2a45a0a" + strColors[0] + "a0.8a0.3a0a0a0a0a" + strColors[0] + "a0.8a0.3a1a0a2a0a0a0a0a0a0a0a0a2a1a1a0a0a169a0a0a0a0a0a0a1a0a0a0a0a0a0a0", callback);
+    addParticle(parent, "init-small-stars"_spr, "70a0.1a4a2a-1a0a180a0a2a400a200a0a0a0a0a0a0a2a1a0a0a" + strColors[1] + "a0.6a0.4a0a0a0a0a" + strColors[1] + "a0.6a0.4a0a0a2a0a0a0a0a0a0a0a0a2a1a0a0a0a28a0a0a0a0a0a0a1a0a0a0a0a0a0a0", callback);
+    addParticle(parent, "small-stars"_spr, "105a-1a5a2a15a0a180a0a2a300a200a0a0a0a0a0a0a2a1a0a0a" + strColors[1] + "a0.6a0.4a0a0a0a0a" + strColors[1] + "a0.6a0.4a1a0a2a0a0a0a0a0a0a0a0a2a1a0a0a0a28a0a0a0a0a0a0a1a0a0a0a0a0a0a0", callback);
+    addParticle(parent, "init-space-dust"_spr, "30a0.1a4a2a-1a0a180a0a2a400a200a0a0a0a0a0a0a200a120a0a360a" + strColors[2] + "a0.19a0.1a0a0a0a0a" + strColors[2] + "a0.19a0.1a0a0a2a0a0a0a0a0a0a0a0a2a1a1a0a0a46a0a0a0a0a0a0a1a0a0a0a0a0a0a0", callback);
+    addParticle(parent, "space-dust"_spr, "55a-1a8a2a5a0a180a0a2a400a200a0a0a0a0a0a0a200a120a0a360a" + strColors[2] + "a0.19a0.1a0a0a0a0a" + strColors[2] + "a0.19a0.1a1a0a2a0a0a0a0a0a0a0a0a2a1a1a0a0a46a0a0a0a0a0a0a1a0a0a0a0a0a0a0", callback);
 }
 
-std::array<CCParticleSystemQuad*, 6> night::addParticlesWithColor(CCNode* parent, BGColor color, const std::optional<ParticleCallback>& callback) {
+void night::addParticlesWithColor(CCNode* parent, BGColor color, const std::optional<ParticleCallback>& callback) {
     switch (color) {
         case BGColor::Blue:
-            return addParticlesWithColor(parent, BLUE_PARTICLE_COLORS, callback);
+            addParticlesWithColor(parent, BLUE_PARTICLE_COLORS, callback);
+            break;
         case BGColor::Gray:
-            return addParticlesWithColor(parent, GRAY_PARTICLE_COLORS, callback);
+            addParticlesWithColor(parent, GRAY_PARTICLE_COLORS, callback);
+            break;
         case BGColor::Purple:
-            return addParticlesWithColor(parent, PURPLE_PARTICLE_COLORS, callback);
+            addParticlesWithColor(parent, PURPLE_PARTICLE_COLORS, callback);
+            break;
         case BGColor::Cyan:
-            return addParticlesWithColor(parent, CYAN_PARTICLE_COLORS, callback);
+            addParticlesWithColor(parent, CYAN_PARTICLE_COLORS, callback);
+            break;
         case BGColor::Red:
-            return addParticlesWithColor(parent, RED_PARTICLE_COLORS, callback);
+            addParticlesWithColor(parent, RED_PARTICLE_COLORS, callback);
+            break;
     }
-
-    return addParticlesWithColor(parent, BLUE_PARTICLE_COLORS, callback);
 }
 
 void night::addGeodeParticles(CCNode* parent) {
