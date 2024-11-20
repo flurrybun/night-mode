@@ -157,7 +157,7 @@ class $modify(NightMenuLayer, MenuLayer) {
 
         auto menuLayer = MenuLayer::scene(false);
         auto transitionFade = CCTransitionFade::create(0.5, menuLayer);
-        CCDirector::sharedDirector()->pushScene(transitionFade);
+        CCDirector::sharedDirector()->replaceScene(transitionFade);
     }
 
     void updateDayNightSprites(float dt) {
