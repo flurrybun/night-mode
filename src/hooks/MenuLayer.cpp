@@ -142,7 +142,7 @@ class $modify(NightMenuLayer, MenuLayer) {
         // hacky fix but like why would you want to spam it anyway
 
         toggleBtn->setEnabled(false);
-        scheduleOnce(schedule_selector(NightMenuLayer::enableToggleBtn), 0.5);
+        scheduleOnce(schedule_selector(NightMenuLayer::enableToggleBtn), 0.15);
 
         return true;
     }
