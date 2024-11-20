@@ -1,5 +1,5 @@
 #include "NightManager.hpp"
-#include "misc/BrightnessSetting.hpp"
+#include "settings/BrightnessSetting.hpp"
 #include "misc/Color.hpp"
 #include <Geode/binding/GameToolbox.hpp>
 

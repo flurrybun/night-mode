@@ -1,4 +1,4 @@
-#include "../misc/SongIDSetting.hpp"
+#include "../settings/SongIDSetting.hpp"
 #include <Geode/modify/GameManager.hpp>
 #include <Geode/binding/MusicDownloadManager.hpp>
 using namespace geode::prelude;
